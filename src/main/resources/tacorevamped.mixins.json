@@ -1,0 +1,16 @@
+{
+  "required": true,
+  "minVersion": "0.8",
+  "package": "net.plasmere.mixin",
+  "compatibilityLevel": "JAVA_8",
+  "mixins": [
+    "MixinBanCommand",
+    "MixinKickCommand",
+    "MixinMessageCommand",
+    "MixinPlayerManager",
+    "MixinServerPlayNetworkHandler"
+  ],
+  "injectors": {
+    "defaultRequire": 1
+  }
+}

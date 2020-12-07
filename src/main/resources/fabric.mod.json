@@ -1,0 +1,36 @@
+{
+  "schemaVersion": 1,
+  "id": "serversimplified",
+  "version": "1.0.6",
+
+  "name": "Taco Revamped",
+  "description": "Adds simple commands for server owners. Originally developed by zeroeightysix, yitzy299 has continued development. Then, Nitrate continued from there.",
+  "authors": [
+    "yitzy299", "zeroeightysix"
+  ],
+  "contact": {
+    "homepage": "https://github.com/yitzy299/server-simplified/releases",
+    "sources": "https://github.com/yitzy299/server-simplified/"
+  },
+
+  "license": "GPL-3.0",
+  "icon": "assets/tacorevamped/icon.png",
+
+  "environment": "server", 
+  "entrypoints": {
+    "main": [
+      "net.plasmere.TacoRevamped"
+    ]
+  },
+  "mixins": [
+    "tacorevamped.mixins.json"
+  ],
+
+  "depends": {
+    "fabricloader": ">=0.10.6",
+    "fabric": ">=0.25.1"
+  },
+  "suggests": {
+    "another-mod": "blocklogger"
+  }
+}
