@@ -36,9 +36,9 @@ public class ReplyCommand {
             }
 
             List<String> a = new ArrayList<>();
-            for (String arg : args){
-                if (!arg.equals(args[0])){
-                    a.add(arg);
+            for (int i = 0; i < args.length; i++){
+                if (! (i <= 0)){
+                    a.add(args[i]);
                 }
             }
             String msg = Utils.concat(a);
@@ -61,11 +61,11 @@ public class ReplyCommand {
     }
 
     public static void register(CommandDispatcher<ServerCommandSource> dispatcher) {
-        LiteralCommandNode node = registerMain(dispatcher);
+        LiteralCommandNode<ServerCommandSource> node = registerMain(dispatcher);
         dispatcher.register(CommandManager.literal("r").redirect(node));
     }
 
-    public static LiteralCommandNode registerMain(CommandDispatcher<ServerCommandSource> dispatcher){
+    public static LiteralCommandNode<ServerCommandSource> registerMain(CommandDispatcher<ServerCommandSource> dispatcher){
         LiteralArgumentBuilder<ServerCommandSource> literalArgumentBuilder = LiteralArgumentBuilder.literal("reply");
         literalArgumentBuilder
                 .then(CommandManager.argument("msg", MessageArgumentType.message())

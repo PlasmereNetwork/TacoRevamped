@@ -4,11 +4,17 @@
   "package": "net.plasmere.mixin",
   "compatibilityLevel": "JAVA_8",
   "mixins": [
+    "BlockBreakMixin",
+    "BlockPlaceMixin",
+    "BlockUseMixin",
+    "BucketItemMixin",
+    "ChestBlockMixin",
     "MixinBanCommand",
     "MixinKickCommand",
     "MixinMessageCommand",
     "MixinPlayerManager",
-    "MixinServerPlayNetworkHandler"
+    "MixinServerPlayNetworkHandler",
+    "ScreenHandlerMixin"
   ],
   "injectors": {
     "defaultRequire": 1

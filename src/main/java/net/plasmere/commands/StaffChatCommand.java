@@ -2,6 +2,7 @@ package net.plasmere.commands;
 
 import com.mojang.brigadier.CommandDispatcher;
 import com.mojang.brigadier.builder.LiteralArgumentBuilder;
+import com.mojang.brigadier.tree.LiteralCommandNode;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.plasmere.TacoRevamped;
 import net.minecraft.server.MinecraftServer;
@@ -55,7 +56,9 @@ public class StaffChatCommand {
                     return 1;
                 });
 
-        dispatcher.register(builder);
+        LiteralCommandNode<ServerCommandSource> node = dispatcher.register(builder);
+        dispatcher.register(CommandManager.literal("sc").redirect(node));
+        dispatcher.register(CommandManager.literal("#").redirect(node));
     }
 
     public static Text generateStaffChatMessage(ServerPlayerEntity playerEntity, String message) {

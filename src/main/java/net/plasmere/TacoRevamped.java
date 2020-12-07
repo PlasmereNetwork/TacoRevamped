@@ -37,26 +37,26 @@ public class TacoRevamped implements ModInitializer {
             ReplyCommand.register(dispatcher);
         });
 
-//        // Register commands
-//        CommandRegistrationCallback.EVENT.register((dispatcher, dedicated) -> {
-//            Commands commands = new Commands();
-//            commands.register(dispatcher);
-//        });
-//        // Connect to database when server is started
-//        ServerLifecycleEvents.SERVER_STARTED.register((server) -> {
-//            DbConn.connect(server);
-//            DbConn.server = server;
-//        });
-//        // Close DB connection when server is closed
-//        ServerLifecycleEvents.SERVER_STOPPED.register((server) -> {
-//            DbConn.close();
-//        });
-//
-//        //Setup inspect mode
-//        InspectModeHandler.init();
-//
-//        // When completed
-//        System.out.println("[BL] Initialisation completed");
+        // Register commands
+        CommandRegistrationCallback.EVENT.register((dispatcher, dedicated) -> {
+            Commands commands = new Commands();
+            commands.register(dispatcher);
+        });
+        // Connect to database when server is started
+        ServerLifecycleEvents.SERVER_STARTED.register((server) -> {
+            DbConn.connect(server);
+            DbConn.server = server;
+        });
+        // Close DB connection when server is closed
+        ServerLifecycleEvents.SERVER_STOPPED.register((server) -> {
+            DbConn.close();
+        });
+
+        //Setup inspect mode
+        InspectModeHandler.init();
+
+        // When completed
+        System.out.println("[BL] Initialization completed");
 
         ServerLifecycleEvents.SERVER_STOPPING.register((server) -> {
             TacoRevamped.shutdown();

@@ -181,4 +181,7 @@ public class MuteCommand {
         }
     }
 
+    public static Date whenUnmute(String uuidAsString){
+        return new Date(mutedPlayers.get(uuidAsString));
+    }
 }

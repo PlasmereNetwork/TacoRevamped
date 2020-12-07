@@ -18,14 +18,13 @@ public class ServerMuteCommand {
     public static void register(CommandDispatcher<ServerCommandSource> dispatcher) {
         dispatcher.register(literal("servermute")
                 .requires(scs -> Utils.hasPermissionFromSource(scs, "servermute"))
-                .executes(scs -> setServerMute(scs)));
+                .executes(ServerMuteCommand::setServerMute));
 
     }
 
     private static int setServerMute(CommandContext<ServerCommandSource> scs) {
         ServerMuteCommand.isServerMuted = !ServerMuteCommand.isServerMuted;
-        String message = String.format("%s %s","§3","Server mute is now set to: "+ServerMuteCommand.isServerMuted);
-        Text messageText = new LiteralText(message);
+        Text messageText = Utils.codedCHText("&eServer mute is now set to: " + isServerMuted);
         try {
             scs.getSource().getPlayer().sendSystemMessage(messageText, Util.NIL_UUID);
         } catch (CommandSyntaxException e) {

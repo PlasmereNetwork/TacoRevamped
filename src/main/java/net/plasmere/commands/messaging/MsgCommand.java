@@ -32,9 +32,9 @@ public class MsgCommand {
             }
 
             List<String> a = new ArrayList<>();
-            for (String arg : args){
-                if (!arg.equals(args[0]) && !arg.equals(args[1])){
-                    a.add(arg);
+            for (int i = 0; i < args.length; i++){
+                if (! (i <= 1)){
+                    a.add(args[i]);
                 }
             }
             String msg = Utils.concat(a);
@@ -57,14 +57,14 @@ public class MsgCommand {
     }
 
     public static void register(CommandDispatcher<ServerCommandSource> dispatcher) {
-        LiteralCommandNode node = registerMain(dispatcher);
+        LiteralCommandNode<ServerCommandSource> node = registerMain(dispatcher);
         dispatcher.register(CommandManager.literal("tell").redirect(node));
         dispatcher.register(CommandManager.literal("t").redirect(node));
         dispatcher.register(CommandManager.literal("w").redirect(node));
         dispatcher.register(CommandManager.literal("taco:msg").redirect(node));
     }
 
-    public static LiteralCommandNode registerMain(CommandDispatcher<ServerCommandSource> dispatcher) {
+    public static LiteralCommandNode<ServerCommandSource> registerMain(CommandDispatcher<ServerCommandSource> dispatcher) {
         LiteralArgumentBuilder<ServerCommandSource> literalArgumentBuilder = LiteralArgumentBuilder.literal("msg");
         literalArgumentBuilder
                 .then(CommandManager.argument("player", EntityArgumentType.player())
