@@ -8,13 +8,11 @@
     "BlockPlaceMixin",
     "BlockUseMixin",
     "BucketItemMixin",
-    "ChestBlockMixin",
     "MixinBanCommand",
     "MixinKickCommand",
     "MixinMessageCommand",
     "MixinPlayerManager",
-    "MixinServerPlayNetworkHandler",
-    "ScreenHandlerMixin"
+    "MixinServerPlayNetworkHandler"
   ],
   "injectors": {
     "defaultRequire": 1

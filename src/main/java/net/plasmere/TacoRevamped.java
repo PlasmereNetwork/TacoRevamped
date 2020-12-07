@@ -35,13 +35,11 @@ public class TacoRevamped implements ModInitializer {
             // Messaging
             MsgCommand.register(dispatcher);
             ReplyCommand.register(dispatcher);
-        });
 
-        // Register commands
-        CommandRegistrationCallback.EVENT.register((dispatcher, dedicated) -> {
             Commands commands = new Commands();
             commands.register(dispatcher);
         });
+
         // Connect to database when server is started
         ServerLifecycleEvents.SERVER_STARTED.register((server) -> {
             DbConn.connect(server);
