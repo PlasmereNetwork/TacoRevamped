@@ -51,7 +51,7 @@ public class ReplyCommand {
 
             for (ServerPlayerEntity p : Objects.requireNonNull(self.getServer()).getPlayerManager().getPlayerList()){
                 if (TacoRevamped.getConfiguration().getPermissions().checkPermissions(p.getCommandSource(), "socialspy") || p.hasPermissionLevel(2)){
-                    p.sendMessage(Utils.codedText("&2SSPY &9>> &d" + Utils.getDisplayName(self) + " &8>> " + Utils.getDisplayName(other) + " &8: &e" + msg), false);
+                    p.sendMessage(Utils.codedText("&2SSPY &9>> &d" + Utils.getDisplayName(self) + " &8>> &d" + Utils.getDisplayName(other) + " &8: &e" + msg), false);
                 }
             }
         } catch (Exception e) {
