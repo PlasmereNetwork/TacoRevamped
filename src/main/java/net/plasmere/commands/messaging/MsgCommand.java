@@ -37,7 +37,7 @@ public class MsgCommand {
                     a.add(args[i]);
                 }
             }
-            String msg = Utils.concat(a);
+            String msg = Utils.normalize(a);
 
             other.sendMessage(Utils.codedText("&8[ &d" + Utils.getDisplayName(self) + " &9>> &6YOU &8] &e" + msg), false);
             self.sendMessage(Utils.codedText("&8[ &6YOU &9>> &d" + Utils.getDisplayName(other) + " &8] &e" + msg), false);
@@ -46,7 +46,7 @@ public class MsgCommand {
             Utils.putMsges(other, self);
 
             for (ServerPlayerEntity p : self.getServer().getPlayerManager().getPlayerList()){
-                if (TacoRevamped.getConfiguration().getPermissions().checkPermissions(p.getCommandSource(), "socialspy") || p.hasPermissionLevel(2) && ! self.equals(p) && ! other.equals(p)){
+                if (TacoRevamped.getConfiguration().getPermissions().checkPermissions(p.getCommandSource(), "socialspy") || p.hasPermissionLevel(2)){
                     p.sendMessage(Utils.codedText("&2SSPY &9>> &d" + Utils.getDisplayName(self) + " &8>> " + Utils.getDisplayName(other) + " &8: &e" + msg), false);
                 }
             }
@@ -57,7 +57,7 @@ public class MsgCommand {
     }
 
     public static void register(CommandDispatcher<ServerCommandSource> dispatcher) {
-        LiteralCommandNode<ServerCommandSource> node = registerMain(dispatcher);
+        LiteralCommandNode<ServerCommandSource> node = regOther(dispatcher);
         dispatcher.register(CommandManager.literal("tell").redirect(node));
         dispatcher.register(CommandManager.literal("t").redirect(node));
         dispatcher.register(CommandManager.literal("w").redirect(node));
@@ -69,7 +69,19 @@ public class MsgCommand {
         literalArgumentBuilder
                 .then(CommandManager.argument("player", EntityArgumentType.player())
                         .then(CommandManager.argument("msg", MessageArgumentType.message())
-                                .executes(MsgCommand::run)));
+                                .executes(MsgCommand::run)
+                        )
+                );
+        return dispatcher.register(literalArgumentBuilder);
+    }
+
+    public static LiteralCommandNode<ServerCommandSource> regOther(CommandDispatcher<ServerCommandSource> dispatcher){
+        LiteralArgumentBuilder<ServerCommandSource> literalArgumentBuilder = CommandManager.literal("msg")
+                .then(CommandManager.argument("targets", EntityArgumentType.players())
+                        .then(CommandManager.argument("message", MessageArgumentType.message())
+                                .executes(MsgCommand::run)
+                        )
+                );
         return dispatcher.register(literalArgumentBuilder);
     }
 }

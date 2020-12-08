@@ -2,13 +2,17 @@ package net.plasmere.utils;
 
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
+import com.mojang.authlib.GameProfile;
+import net.minecraft.server.MinecraftServer;
+import net.minecraft.server.network.ServerPlayerEntity;
+import net.minecraft.util.WorldSavePath;
+import net.plasmere.TacoRevamped;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
+import java.io.*;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.nio.file.Path;
+import java.util.Objects;
 import java.util.UUID;
 
 public class UUIDFetcher {
@@ -56,5 +60,57 @@ public class UUIDFetcher {
         }
 
         return formatted.toString();
+    }
+
+    public static ServerPlayerEntity getServerPlayerEntity(UUID uuid, String name){
+        try {
+            MinecraftServer server = TacoRevamped.getServer();
+            Path path = server.getSavePath(WorldSavePath.PLAYERDATA);
+            File uuidFile = new File(path + File.separator + uuid + ".dat");
+            return new ServerPlayerEntity(server, server.getOverworld(), new GameProfile(uuid, name));
+        } catch (Exception e){
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    public static GameProfile getGameProfile(String name){
+        MinecraftServer server = TacoRevamped.getServer();
+        try {
+            ServerPlayerEntity other = Objects.requireNonNull(server).getPlayerManager().getPlayer(UUIDFetcher.fetch(name));
+
+            if (other != null) {
+                return other.getGameProfile();
+            }
+
+            UUID uuid = fetch(name);
+
+            Path path = server.getSavePath(WorldSavePath.PLAYERDATA);
+            File uuidFile = new File(path + File.separator + uuid + ".dat");
+            return new GameProfile(uuid, name);
+        } catch (Exception e){
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    public static ServerPlayerEntity getServerPlayerEntity(String name){
+        MinecraftServer server = TacoRevamped.getServer();
+        try {
+            ServerPlayerEntity other = Objects.requireNonNull(server).getPlayerManager().getPlayer(UUIDFetcher.fetch(name));
+
+            if (other != null) {
+                return other;
+            }
+
+            UUID uuid = fetch(name);
+
+            Path path = server.getSavePath(WorldSavePath.PLAYERDATA);
+            File uuidFile = new File(path + File.separator + uuid + ".dat");
+            return new ServerPlayerEntity(server, server.getOverworld(), new GameProfile(uuid, name));
+        } catch (Exception e){
+            e.printStackTrace();
+            return null;
+        }
     }
 }

@@ -3,14 +3,13 @@ package net.plasmere.mixin;
 import net.minecraft.network.MessageType;
 import net.minecraft.text.TranslatableText;
 import net.plasmere.Utils;
-import net.plasmere.commands.MuteCommand;
-import net.plasmere.commands.ServerMuteCommand;
+import net.plasmere.commands.punishments.MuteCommand;
+import net.plasmere.commands.punishments.ServerMuteCommand;
 import net.plasmere.commands.StaffChatCommand;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.network.ServerPlayNetworkHandler;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.network.packet.c2s.play.ChatMessageC2SPacket;
-import net.minecraft.text.LiteralText;
 import net.minecraft.text.Text;
 import net.minecraft.util.Util;
 

@@ -1,7 +1,7 @@
 package net.plasmere;
 
 import com.google.gson.*;
-import net.plasmere.commands.MuteCommand;
+import net.plasmere.commands.punishments.MuteCommand;
 
 import java.io.IOException;
 import java.nio.file.Files;

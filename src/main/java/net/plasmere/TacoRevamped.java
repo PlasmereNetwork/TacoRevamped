@@ -1,5 +1,6 @@
 package net.plasmere;
 
+import net.minecraft.server.MinecraftServer;
 import net.plasmere.commands.*;
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.command.v1.CommandRegistrationCallback;
@@ -7,22 +8,24 @@ import net.fabricmc.fabric.api.event.lifecycle.v1.ServerLifecycleEvents;
 import net.minecraft.entity.effect.StatusEffects;
 import net.plasmere.commands.messaging.MsgCommand;
 import net.plasmere.commands.messaging.ReplyCommand;
+import net.plasmere.commands.punishments.*;
 import net.plasmere.save.sql.DbConn;
 
 import java.io.IOException;
 
 public class TacoRevamped implements ModInitializer {
 
+    private static MinecraftServer server;
     private static Configuration configuration;
 
     @Override
     public void onInitialize() {
+        ServerLifecycleEvents.SERVER_STARTING.register(this::onLogicalServerStarting);
+
         TacoRevamped.configuration = Configuration.load();
         CommandRegistrationCallback.EVENT.register((dispatcher, dedicated) -> {
-            MuteCommand.register(dispatcher);
             PermissionCommand.register(dispatcher);
             PlayerActionCommand.register(dispatcher, VanishCommand.class);
-            ServerMuteCommand.register(dispatcher);
             StaffChatCommand.register(dispatcher);
             FlyCommand.register(dispatcher);
             DiscordCommand.register(dispatcher);
@@ -35,6 +38,14 @@ public class TacoRevamped implements ModInitializer {
             // Messaging
             MsgCommand.register(dispatcher);
             ReplyCommand.register(dispatcher);
+
+            // Punishments
+            BanCommand.register(dispatcher);
+            BanIPCommand.register(dispatcher);
+            MuteCommand.register(dispatcher);
+            ServerMuteCommand.register(dispatcher);
+            TempBanCommand.register(dispatcher);
+            TempBanIPCommand.register(dispatcher);
 
             Commands commands = new Commands();
             commands.register(dispatcher);
@@ -72,8 +83,10 @@ public class TacoRevamped implements ModInitializer {
         VanishCommand.getVanished().forEach(entity -> entity.removeStatusEffect(StatusEffects.INVISIBILITY));
     }
 
+    private void onLogicalServerStarting(MinecraftServer minecraftServer){ server = minecraftServer; }
+
     public static Configuration getConfiguration() {
         return configuration;
     }
-
+    public static MinecraftServer getServer() { return server; }
 }

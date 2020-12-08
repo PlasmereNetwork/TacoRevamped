@@ -41,7 +41,7 @@ public class ReplyCommand {
                     a.add(args[i]);
                 }
             }
-            String msg = Utils.concat(a);
+            String msg = Utils.normalize(a);
 
             other.sendMessage(Utils.codedText("&8[ &d" + Utils.getDisplayName(self) + " &9>> &6YOU &8] &e" + msg), false);
             self.sendMessage(Utils.codedText("&8[ &6YOU &9>> &d" + Utils.getDisplayName(other) + " &8] &e" + msg), false);
@@ -50,7 +50,7 @@ public class ReplyCommand {
             Utils.putMsges(other, self);
 
             for (ServerPlayerEntity p : Objects.requireNonNull(self.getServer()).getPlayerManager().getPlayerList()){
-                if (TacoRevamped.getConfiguration().getPermissions().checkPermissions(p.getCommandSource(), "socialspy") && ! self.equals(p) && ! other.equals(p)){
+                if (TacoRevamped.getConfiguration().getPermissions().checkPermissions(p.getCommandSource(), "socialspy") || p.hasPermissionLevel(2)){
                     p.sendMessage(Utils.codedText("&2SSPY &9>> &d" + Utils.getDisplayName(self) + " &8>> " + Utils.getDisplayName(other) + " &8: &e" + msg), false);
                 }
             }
@@ -66,8 +66,7 @@ public class ReplyCommand {
     }
 
     public static LiteralCommandNode<ServerCommandSource> registerMain(CommandDispatcher<ServerCommandSource> dispatcher){
-        LiteralArgumentBuilder<ServerCommandSource> literalArgumentBuilder = LiteralArgumentBuilder.literal("reply");
-        literalArgumentBuilder
+        LiteralArgumentBuilder<ServerCommandSource> literalArgumentBuilder = CommandManager.literal("reply")
                 .then(CommandManager.argument("msg", MessageArgumentType.message())
                         .executes(ReplyCommand::run)
                 );

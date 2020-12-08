@@ -212,19 +212,19 @@ public class Utils {
     }
 
     public static MutableText makeLinked(String text, String url){
-        MutableText mt = codedText(text);
+        MutableText mt = new LiteralText(text);
         mt.styled(style -> style.withClickEvent(new ClickEvent(ClickEvent.Action.OPEN_URL, url)));
         return mt;
     }
 
     public static MutableText makeCHLinked(String text, String url, String hover){
-        MutableText mt = codedText(text);
+        MutableText mt = new LiteralText(text);
         mt.styled(style -> style.withClickEvent(new ClickEvent(ClickEvent.Action.OPEN_URL, url)));
         mt.styled(style -> style.withHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, codedText(hover))));
         return mt;
     }
 
-    public static String concat(String[] strings){
+    public static String normalize(String[] strings){
         StringBuilder thing = new StringBuilder();
         int i = 1;
         for (String t : strings){
@@ -238,7 +238,7 @@ public class Utils {
         return thing.toString();
     }
 
-    public static String concat(List<String> strings){
+    public static String normalize(List<String> strings){
         StringBuilder thing = new StringBuilder();
         int i = 1;
         for (String t : strings){
