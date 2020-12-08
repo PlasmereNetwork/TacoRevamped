@@ -17,20 +17,13 @@ import java.util.regex.Pattern;
 
 public class Utils {
 
-    private static final Dictionary<ServerPlayerEntity, ServerPlayerEntity> msging = new Hashtable<>();
-    public static Dictionary<ServerPlayerEntity, ServerPlayerEntity> getMsging(){
+    private static final HashMap<ServerPlayerEntity, ServerPlayerEntity> msging = new HashMap<>();
+    public static HashMap<ServerPlayerEntity, ServerPlayerEntity> getMsging(){
         return msging;
     }
     public static void putMsges(ServerPlayerEntity from, ServerPlayerEntity to){ msging.put(from, to); }
     public static void remMsges(ServerPlayerEntity from){ msging.remove(from); }
-    public static boolean inMsges(ServerPlayerEntity from){
-        while (msging.keys().hasMoreElements()){
-            if (from.equals(msging.keys().nextElement())){
-                return true;
-            }
-        }
-        return false;
-    }
+    public static boolean inMsges(ServerPlayerEntity from){ return msging.containsKey(from); }
 
     private static final List<ServerPlayerEntity> sitToggled = new ArrayList<>();
     public static List<ServerPlayerEntity> getSitToggled() { return sitToggled; }
