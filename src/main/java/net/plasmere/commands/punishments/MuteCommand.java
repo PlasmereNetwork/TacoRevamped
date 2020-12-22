@@ -6,6 +6,7 @@ import com.google.gson.JsonPrimitive;
 import com.mojang.brigadier.CommandDispatcher;
 import com.mojang.brigadier.builder.LiteralArgumentBuilder;
 import com.mojang.brigadier.context.CommandContext;
+import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import net.plasmere.TacoRevamped;
 import net.minecraft.command.argument.*;
 import net.minecraft.server.command.CommandManager;
@@ -13,6 +14,7 @@ import net.minecraft.server.command.ServerCommandSource;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.text.LiteralText;
 import net.minecraft.text.Text;
+import net.plasmere.Utils;
 
 import java.time.Duration;
 import java.time.Instant;
@@ -59,7 +61,7 @@ public class MuteCommand {
         dispatcher.register(unmuteBuilder);
     }
 
-    private static int mutePlayer(CommandContext<ServerCommandSource> context, Collection<ServerPlayerEntity> target, boolean muted, Text time) {
+    private static int mutePlayer(CommandContext<ServerCommandSource> context, Collection<ServerPlayerEntity> target, boolean muted, Text time) throws CommandSyntaxException {
         long muteTime = -1L;
         Duration muteDuration = null;
         if (time != null) {
@@ -77,21 +79,25 @@ public class MuteCommand {
             }
         }
 
+        ServerPlayerEntity self = context.getSource().getPlayer();
+
+        String timeAppend = muteTime == -1 ? "" : " &efor &6" + humanReadableDuration(muteDuration);
+
         int i = 0;
         for (ServerPlayerEntity entity : target) {
             i++;
-            if (muted)
+            if (muted) {
                 mutedPlayers.put(entity.getUuidAsString(), muteTime);
-            else
+            }
+            else {
                 mutedPlayers.remove(entity.getUuidAsString());
+            }
+
+            self.sendMessage(Utils.codedText("&eSet &d" + Utils.getDisplayName(entity) + " &eto " +
+                    (mutedPlayers.containsKey(target.iterator().next().getUuidAsString()) ? "&cmuted" : "&aunmuted") +
+                    timeAppend + "&e."), false);
         }
 
-        String timeAppend = muteTime == -1 ? "" : " for " + humanReadableDuration(muteDuration);
-        if (i == 1) {
-            context.getSource().sendFeedback(new LiteralText((muted ? "Muted" : "Unmuted") +  " ").append(target.iterator().next().getName()).append(timeAppend + "."), false);
-        } else {
-            context.getSource().sendFeedback(new LiteralText((muted ? "Muted" : "Unmuted") +  i + " players" + timeAppend + "."), false);
-        }
         return i;
     }
 

@@ -53,6 +53,11 @@ public class BanCommand {
                 other.networkHandler.disconnect(Utils.newText("You have been banned!"));
             }
             self.sendMessage(Utils.codedText("&eBanned &d" + args[1] + " &efor reason: " + reason), false);
+            for (ServerPlayerEntity p : self.getServer().getPlayerManager().getPlayerList()){
+                if (Utils.hasPermission(p, "bans.see")){
+                    p.sendMessage(Utils.codedText("&d" + Utils.getDisplayName(self) + " &8>> &cBanned &d" + args[1] + " &cfor reason: &3" + reason), false);
+                }
+            }
             return 1;
         } catch (Exception e) {
             e.printStackTrace();

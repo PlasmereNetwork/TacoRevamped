@@ -2,6 +2,7 @@ package net.plasmere.mixin;
 
 import net.minecraft.network.MessageType;
 import net.minecraft.text.TranslatableText;
+import net.plasmere.TacoRevamped;
 import net.plasmere.Utils;
 import net.plasmere.commands.punishments.MuteCommand;
 import net.plasmere.commands.punishments.ServerMuteCommand;
@@ -45,14 +46,20 @@ public class MixinServerPlayNetworkHandler {
             StaffChatCommand.sendToStaffChat(StaffChatCommand.generateStaffChatMessage(player, message), server);
             info.cancel();
         } else if (packet.getChatMessage().startsWith("#")){
-            String message = packet.getChatMessage().substring(1);
-            StaffChatCommand.sendToStaffChat(StaffChatCommand.generateStaffChatMessage(player, message), server);
-            info.cancel();
+            if (TacoRevamped.getConfiguration().getPermissions().checkPermissions(player.getCommandSource(), "staffchat")
+                    || player.hasPermissionLevel(2)) {
+                String message = packet.getChatMessage().substring(1);
+                StaffChatCommand.sendToStaffChat(StaffChatCommand.generateStaffChatMessage(player, message), server);
+                info.cancel();
+            }
         } else if (! packet.getChatMessage().startsWith("/")){
-            String message = packet.getChatMessage();
-            Text text = new TranslatableText("chat.type.text", this.player.getDisplayName(), Utils.codedCHText(message));
-            this.server.getPlayerManager().broadcastChatMessage(text, MessageType.CHAT, this.player.getUuid());
-            info.cancel();
+            if (TacoRevamped.getConfiguration().getPermissions().checkPermissions(player.getCommandSource(), "chat.coded")
+                    || player.hasPermissionLevel(2)) {
+                String message = packet.getChatMessage();
+                Text text = new TranslatableText("chat.type.text", this.player.getDisplayName(), Utils.codedCHText(message));
+                this.server.getPlayerManager().broadcastChatMessage(text, MessageType.CHAT, this.player.getUuid());
+                info.cancel();
+            }
         }
     }
 }

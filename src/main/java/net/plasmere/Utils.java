@@ -115,7 +115,7 @@ public class Utils {
             while (matcher.find()) {
                 foundUrl = matcher.group(0);
 
-                return makeLinked(text, foundUrl);
+                return makeLinked(codedString(text), foundUrl);
             }
         } catch (Exception e) {
             return mt;
@@ -136,7 +136,7 @@ public class Utils {
 
                 String hover = "&4&n" + foundUrl;
 
-                return makeCHLinked(text, foundUrl, hover);
+                return makeCHLinked(codedString(text), foundUrl, hover);
             }
         } catch (Exception e) {
             return mt;
@@ -159,7 +159,7 @@ public class Utils {
 
                 text = text.replace(name, "&e" + name + "&r");
 
-                return makeCHLinked(text, foundUrl, hover);
+                return makeCHLinked(codedString(text), foundUrl, hover);
             }
         } catch (Exception e) {
             return mt;

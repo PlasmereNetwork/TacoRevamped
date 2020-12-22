@@ -36,6 +36,10 @@ public class StaffChatCommand {
                                 TacoRevamped.getConfiguration().getPermissions().checkPermissions(commandSource, "staffchat")
                                         || commandSource.hasPermissionLevel(2))
                 .then(CommandManager.argument("message", MessageArgumentType.message())
+                        .requires(
+                                (commandSource) ->
+                                        TacoRevamped.getConfiguration().getPermissions().checkPermissions(commandSource, "staffchat")
+                                                || commandSource.hasPermissionLevel(2))
                         .executes(context -> {
                             sendToStaffChat(generateStaffChatMessage(isHuman(context.getSource()) ? context.getSource().getPlayer() : null, MessageArgumentType.getMessage(context, "message").asString()), context.getSource().getMinecraftServer());
                             return 1;
